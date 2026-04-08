@@ -1,0 +1,34 @@
+[groups]
+admins = jess
+mechanical = alice,bob
+electrical = carol,dave
+business = erin
+
+[cfe-solidworks:/]
+@admins = rw
+* =
+
+[cfe-solidworks:/trunk]
+@admins = rw
+@mechanical = r
+@electrical = r
+@business = r
+
+[cfe-solidworks:/trunk/FormulaElectric/2026/01_Vehicle]
+@admins = rw
+@mechanical = rw
+@electrical = r
+@business = r
+
+[cfe-solidworks:/trunk/FormulaElectric/2026/02_Electrical]
+@admins = rw
+@mechanical = r
+@electrical = rw
+@business = r
+
+[cfe-solidworks:/tags]
+@admins = rw
+@mechanical = r
+@electrical = r
+@business = r
+
