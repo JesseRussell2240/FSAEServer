@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="panel" style="max-width: 420px; margin: 80px auto;">
+    <h1>{{ title }}</h1>
+    <p>Use the dedicated admin UI login, not an SVN user account.</p>
+    <form method="post">
+        <label for="username">Admin username</label>
+        <input id="username" name="username" type="text" required>
+        <label for="password">Admin password</label>
+        <input id="password" name="password" type="password" required>
+        <div class="row" style="margin-top: 16px;">
+            <button class="primary" type="submit">Sign in</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

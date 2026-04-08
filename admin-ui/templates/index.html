@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="panel">
+    <div class="row spread">
+        <div>
+            <h1>{{ title }}</h1>
+            <p>Create users, reset passwords, and control SVN group membership. Keep this interface internal-only.</p>
+        </div>
+        <form method="post" action="{{ url_for('logout') }}">
+            <button type="submit">Log out</button>
+        </form>
+    </div>
+</div>
+
+<div class="panel">
+    <h2>Create Or Reset User</h2>
+    <form method="post" action="{{ url_for('create_user') }}">
+        <div class="grid">
+            <div>
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" required>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" required>
+            </div>
+        </div>
+        <div class="checks" style="margin: 14px 0;">
+            {% for group in group_names %}
+                <label><input type="checkbox" name="{{ group }}"> {{ group }}</label>
+            {% endfor %}
+        </div>
+        <button class="primary" type="submit">Save user</button>
+    </form>
+</div>
+
+<div class="panel">
+    <h2>Existing Users</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Groups</th>
+                <th>Reset Password</th>
+                <th>Membership</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td><code>{{ user.username }}</code></td>
+                    <td>{{ user.groups|join(", ") if user.groups else "none" }}</td>
+                    <td>
+                        <form method="post" action="{{ url_for('reset_password', username=user.username) }}">
+                            <input name="password" type="password" placeholder="New password" required>
+                            <button type="submit">Reset</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" action="{{ url_for('save_groups', username=user.username) }}">
+                            <div class="checks">
+                                {% for group in group_names %}
+                                    <label>
+                                        <input type="checkbox" name="{{ group }}" {% if group in user.groups %}checked{% endif %}>
+                                        {{ group }}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                            <button type="submit">Save groups</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" action="{{ url_for('delete_user', username=user.username) }}" onsubmit="return confirm('Delete {{ user.username }} from SVN passwd and authz files?');">
+                            <button class="danger" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

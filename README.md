@@ -46,6 +46,7 @@ The website and the CAD vault should not live in the same version-control system
 - [Architecture and security model](docs/architecture.md)
 - [SolidWorks client setup](docs/solidworks-client-setup.md)
 - [PDM workflow](docs/pdm-workflow.md)
+- [SVN admin UI](docs/admin-ui.md)
 - [Vault template](vault-template/README.md)
 
 ## Reference Sources
