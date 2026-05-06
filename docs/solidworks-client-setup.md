@@ -66,6 +66,8 @@ The following file types should require locks:
 
 The goal is simple: if the file is effectively binary or treated as a released artifact, force a lock before editing.
 
+Locks are file-level only. Subversion will not lock a folder itself, so if you need exclusivity on a design area, lock the controlling CAD files in that folder.
+
 ## Auto-Props For New Files
 
 On Windows, TortoiseSVN uses the Subversion config file under `%APPDATA%\Subversion\config`.

@@ -12,6 +12,7 @@ DOMAIN="conestogaformulaelectric.ca"
 WWW_ROOT="/var/www/${DOMAIN}/current"
 SVN_ROOT="/srv/svn"
 BACKUP_ROOT="/var/backups/cfe"
+DAVLOCK_ROOT="/var/lib/apache2/davlock"
 SITE_CONF="/etc/apache2/sites-available/${DOMAIN}.conf"
 AUTHZ_FILE="/etc/apache2/dav_svn.authz"
 PASSWD_FILE="/etc/apache2/dav_svn.passwd"
@@ -33,6 +34,9 @@ apt-get install -y \
 
 mkdir -p "${WWW_ROOT}" "${SVN_ROOT}" "${BACKUP_ROOT}"
 chmod 755 "${SVN_ROOT}" "${BACKUP_ROOT}"
+mkdir -p "${DAVLOCK_ROOT}"
+chown www-data:www-data "${DAVLOCK_ROOT}"
+chmod 750 "${DAVLOCK_ROOT}"
 chown -R www-data:www-data "/var/www/${DOMAIN}"
 
 if [[ ! -f "${PASSWD_FILE}" ]]; then

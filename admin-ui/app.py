@@ -6,7 +6,7 @@ import subprocess
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask import Flask, flash, redirect, render_template, request, session, url_for as flask_url_for
 
 
 APP_TITLE = "SVN Admin"
@@ -16,11 +16,28 @@ HTPASSWD_BIN = os.environ.get("HTPASSWD_BIN", "/usr/bin/htpasswd")
 ADMIN_USERNAME = os.environ.get("SVN_ADMIN_UI_USER", "admin")
 ADMIN_PASSWORD = os.environ.get("SVN_ADMIN_UI_PASSWORD", "")
 SECRET_KEY = os.environ.get("SVN_ADMIN_UI_SECRET", secrets.token_hex(32))
+ADMIN_UI_BASE_PATH = os.environ.get("SVN_ADMIN_UI_BASE_PATH", "").strip()
 GROUP_NAMES = ("admins", "mechanical", "electrical", "business")
 USERNAME_RE = re.compile(r"^[a-zA-Z0-9._-]{3,32}$")
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = SECRET_KEY
+if ADMIN_UI_BASE_PATH:
+    if not ADMIN_UI_BASE_PATH.startswith("/"):
+        ADMIN_UI_BASE_PATH = f"/{ADMIN_UI_BASE_PATH}"
+    ADMIN_UI_BASE_PATH = ADMIN_UI_BASE_PATH.rstrip("/")
+app.config["APPLICATION_ROOT"] = ADMIN_UI_BASE_PATH or "/"
+if ADMIN_UI_BASE_PATH:
+    app.config["SESSION_COOKIE_PATH"] = ADMIN_UI_BASE_PATH
+
+
+def url_for(endpoint, **values):
+    return f"{ADMIN_UI_BASE_PATH}{flask_url_for(endpoint, **values)}"
+
+
+@app.context_processor
+def inject_url_for():
+    return {"url_for": url_for}
 
 
 def require_admin_password():
@@ -268,4 +285,3 @@ def delete_user(username):
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=int(os.environ.get("SVN_ADMIN_UI_PORT", "5050")))
-

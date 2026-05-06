@@ -69,6 +69,7 @@ It also:
 - installs the Apache virtual host template
 - installs the sample SVN authz file
 - enables the Apache modules needed for HTTPS and SVN
+- creates the Apache DAV lock database directory used for SVN file locks
 
 ## 4. Deploy The Website
 
@@ -99,6 +100,8 @@ sudo htpasswd /etc/apache2/dav_svn.passwd bob
 ```
 
 Edit `/etc/apache2/dav_svn.authz` and place users into the right groups.
+
+Remember that SVN locks are file-level and only work as intended when the target files have `svn:needs-lock` set. Without that property, users can still edit writable working-copy files locally.
 
 ## 6. Create The Repository And Vault Layout
 

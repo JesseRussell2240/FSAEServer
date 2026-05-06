@@ -37,6 +37,7 @@ Set at least:
 SVN_ADMIN_UI_PASSWORD=<strong password>
 SVN_ADMIN_UI_SECRET=<long random secret>
 SVN_ADMIN_UI_PORT=5050
+SVN_ADMIN_UI_BASE_PATH=
 ```
 
 Then start the service:
@@ -86,6 +87,8 @@ location /admin/svn-users/ {
 
 This is intentionally LAN-scoped. If you need remote access, use a VPN or add another auth layer.
 
+If you mount the UI under a path like `/admin/svn-users/`, set `SVN_ADMIN_UI_BASE_PATH=/admin/svn-users` in `/etc/default/fsae-svn-admin`. That keeps the generated form actions and redirects inside the reverse-proxy prefix instead of posting to `/users` at the domain root.
+
 ## Operational Notes
 
 - The dedicated admin UI login is separate from SVN users.
@@ -96,4 +99,3 @@ This is intentionally LAN-scoped. If you need remote access, use a VPN or add an
 ```bash
 sudo systemctl reload apache2
 ```
-

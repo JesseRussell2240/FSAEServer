@@ -44,6 +44,8 @@ if [[ ! -f /etc/default/fsae-svn-admin ]]; then
 SVN_ADMIN_UI_PASSWORD=change-this-before-starting
 SVN_ADMIN_UI_SECRET=replace-with-a-long-random-string
 SVN_ADMIN_UI_PORT=5050
+# Set this if the UI is mounted under a reverse-proxy prefix, for example /admin/svn-users
+SVN_ADMIN_UI_BASE_PATH=
 EOF
     chmod 600 /etc/default/fsae-svn-admin
 fi
@@ -61,4 +63,3 @@ echo "Then start it:"
 echo "  sudo systemctl start fsae-svn-admin"
 echo
 echo "Bind it behind a reverse proxy or internal-only listener. Do not expose it publicly without access controls."
-
