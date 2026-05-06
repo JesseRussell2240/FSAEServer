@@ -55,7 +55,7 @@ else
     echo "Preserving existing Apache site config: ${SITE_CONF}"
 fi
 
-a2enmod dav dav_svn authz_svn headers rewrite ssl
+a2enmod dav dav_fs dav_svn authz_svn headers rewrite ssl
 a2dissite 000-default.conf >/dev/null 2>&1 || true
 a2ensite "${DOMAIN}.conf"
 
